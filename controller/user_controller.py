@@ -1,7 +1,7 @@
 from app import app
-from model.user_model import user_model
+from model.user_model import UserModel
 
-obj = user_model()
+obj = UserModel()
 
 
 @app.route("/user/getall")
