@@ -24,7 +24,7 @@ class UserModel:
             return {"error": "Database connection not established."}
 
         try:
-            # it is better to create a cursor where or when we nees beacase the persistent cursor (self.cursor) in __init__, which is not ideal and can cause Memory leaks and Locked resources if not properly closed.
+            # it is better to create a cursor where or when we need beacase the persistent cursor (self.cursor) in __init__, which is not ideal and can cause Memory leaks. and Locked resources if not properly closed.
             cursor = self.conn.cursor(dictionary=True)
             cursor.execute("SELECT * FROM users_table")
             result = cursor.fetchall()
@@ -34,5 +34,22 @@ class UserModel:
                 return {"users": result}
             else:
                 return {"message": "No Data Found"}
+        except Exception as e:
+            return {"error": str(e)}
+
+    def user_signup_model(self, data):
+        try:
+            cursor = self.conn.cursor()
+            query = "INSERT INTO users_table (name, email, phone, role, password) VALUES (%s, %s, %s, %s, %s)"
+            values = (
+                data["name"],
+                data["email"],
+                data["phone"],
+                data["role"],
+                data["password"],
+            )
+            cursor.execute(query, values)
+            cursor.close()
+            return {"message": "User created successfully"}
         except Exception as e:
             return {"error": str(e)}
