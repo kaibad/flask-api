@@ -19,6 +19,7 @@ class UserModel:
             print(f"Error connecting to database: {e}")
             self.conn = None
 
+    # Get method
     def user_getall_model(self):
         if not self.conn:
             return {"error": "Database connection not established."}
@@ -37,6 +38,7 @@ class UserModel:
         except Exception as e:
             return {"error": str(e)}
 
+    # post method
     def user_signup_model(self, data):
         try:
             cursor = self.conn.cursor()
@@ -51,5 +53,34 @@ class UserModel:
             cursor.execute(query, values)
             cursor.close()
             return {"message": "User created successfully"}
+        except Exception as e:
+            return {"error": str(e)}
+
+    # PUT method
+    def user_updateprofile_model(self, data):
+        try:
+            cursor = self.conn.cursor()
+            # Use %s to prevent SQL injection and keep your app secure — never directly inject strings using f"" or "{}" in SQL.
+            query = """
+                UPDATE users_table
+                SET name = %s, email = %s, phone = %s, role = %s, password = %s
+                WHERE id = %s
+            """
+            # Triple quotes in Python (""" ... """ or ''' ... ''') are used for multi-line strings.
+            values = (
+                data["name"],
+                data["email"],
+                data["phone"],
+                data["role"],
+                data["password"],
+                data["id"],
+            )
+            cursor.execute(query, values)
+            affected_rows = cursor.rowcount
+            cursor.close()
+            if affected_rows > 0:
+                return {"message": "User updated successfully"}
+            else:
+                return {"message": "Nothing to update or user not found"}
         except Exception as e:
             return {"error": str(e)}
