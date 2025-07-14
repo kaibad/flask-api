@@ -1,4 +1,5 @@
 import mysql.connector
+from flask import make_response
 
 from configs.config import dbconfig
 
@@ -32,11 +33,11 @@ class UserModel:
             cursor.close()
 
             if result:
-                return {"users": result}
+                return make_response({"users": result}, 200)
             else:
-                return {"message": "No Data Found"}
+                return make_response({"message": "No Data Found"}, 204)
         except Exception as e:
-            return {"error": str(e)}
+            return make_response({"error": str(e)}, 500)
 
     # post method
     def user_signup_model(self, data):
@@ -52,9 +53,9 @@ class UserModel:
             )
             cursor.execute(query, values)
             cursor.close()
-            return {"message": "User created successfully"}
+            return make_response({"message": "User created successfully"}, 201)
         except Exception as e:
-            return {"error": str(e)}
+            return make_response({"error": str(e)}, 500)
 
     # PUT method
     def user_updateprofile_model(self, data):
@@ -79,11 +80,13 @@ class UserModel:
             affected_rows = cursor.rowcount
             cursor.close()
             if affected_rows > 0:
-                return {"message": "User updated successfully"}
+                return make_response({"message": "User updated successfully"}, 201)
             else:
-                return {"message": "Nothing to update or user not found"}
+                return make_response(
+                    {"message": "Nothing to update or user not found"}, 202
+                )
         except Exception as e:
-            return {"error": str(e)}
+            return make_response({"error": str(e)}, 500)
 
     # DELETE method
     def user_deleteprofile_model(self, id):
@@ -96,9 +99,11 @@ class UserModel:
             affected_rows = cursor.rowcount
             cursor.close()
             if affected_rows > 0:
-                return {"message": "User Deleted successfully"}
+                return make_response({"message": "User Deleted successfully"}, 200)
             else:
-                return {"message": "Nothing to delete or user not found"}
+                return make_response(
+                    {"message": "Nothing to delete or user not found"}, 202
+                )
 
         except Exception as e:
-            return {"error": str(e)}
+            return make_response({"error": str(e)}, 500)
