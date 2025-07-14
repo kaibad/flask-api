@@ -22,3 +22,12 @@ def user_signup_controller():
 def user_update_profile():
     result = obj.user_updateprofile_model(request.form)
     return jsonify(result)
+
+
+# request.form catches the data send form the body form but the data send from teh url is catched as
+
+
+@app.route("/user/deleteprofile/<id>", methods=["DELETE"])
+def user_delete_controller(id):
+    result = obj.user_deleteprofile_model(id)
+    return jsonify(result)

@@ -84,3 +84,21 @@ class UserModel:
                 return {"message": "Nothing to update or user not found"}
         except Exception as e:
             return {"error": str(e)}
+
+    # DELETE method
+    def user_deleteprofile_model(self, id):
+        try:
+            cursor = self.conn.cursor()
+            query = " DELETE FROM users_table WHERE ID = %s "
+
+            values = (id,)
+            cursor.execute(query, values)
+            affected_rows = cursor.rowcount
+            cursor.close()
+            if affected_rows > 0:
+                return {"message": "User Deleted successfully"}
+            else:
+                return {"message": "Nothing to delete or user not found"}
+
+        except Exception as e:
+            return {"error": str(e)}
