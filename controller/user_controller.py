@@ -14,8 +14,8 @@ def user_getall_controller():
 
 @app.route("/user/signup", methods=["POST"])
 def user_signup_controller():
-    result = obj.user_signup_model(request.form)
-    return jsonify(result)
+    return obj.user_signup_model(request.form)
+    # return jsonify(result)
 
 
 @app.route("/user/updateprofile", methods=["PUT"])

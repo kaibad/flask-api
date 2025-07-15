@@ -41,7 +41,7 @@ class UserModel:
     # post method
     def user_signup_model(self, data):
         try:
-            cursor = self.conn.cursor()
+            cursor = self.conn.cursor(dictionary=True)
             query = "INSERT INTO users_table (name, email, phone, role, password) VALUES (%s, %s, %s, %s, %s)"
             values = (
                 data["name"],
@@ -52,7 +52,7 @@ class UserModel:
             )
             cursor.execute(query, values)
             cursor.close()
-            return {"message": "User created successfully"}
+            return {"message": "User Created successfully"}
         except Exception as e:
             return {"error": str(e)}
 
