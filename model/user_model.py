@@ -1,4 +1,5 @@
 import mysql.connector
+from flask import make_response
 
 from configs.config import dbconfig
 
@@ -32,9 +33,9 @@ class UserModel:
             cursor.close()
 
             if result:
-                return {"users": result}
+                return make_response({"users": result}, 200)
             else:
-                return {"message": "No Data Found"}
+                return make_response({"message": "No Data Found"}, 404)
         except Exception as e:
             return {"error": str(e)}
 
@@ -52,7 +53,7 @@ class UserModel:
             )
             cursor.execute(query, values)
             cursor.close()
-            return {"message": "User Created successfully"}
+            return make_response({"message": "User Created successfully"}, 201)
         except Exception as e:
             return {"error": str(e)}
 
@@ -79,9 +80,11 @@ class UserModel:
             affected_rows = cursor.rowcount
             cursor.close()
             if affected_rows > 0:
-                return {"message": "User updated successfully"}
+                return make_response({"message": "User updated successfully"}, 200)
             else:
-                return {"message": "Nothing to update or user not found"}
+                return make_response(
+                    {"message": "Nothing to update or user not found"}, 202
+                )
         except Exception as e:
             return {"error": str(e)}
 
@@ -96,9 +99,11 @@ class UserModel:
             affected_rows = cursor.rowcount
             cursor.close()
             if affected_rows > 0:
-                return {"message": "User Deleted successfully"}
+                return make_response({"message": "User Deleted successfully"}, 200)
             else:
-                return {"message": "Nothing to delete or user not found"}
+                return make_response(
+                    {"message": "Nothing to delete or user not found"}, 202
+                )
 
         except Exception as e:
             return {"error": str(e)}
